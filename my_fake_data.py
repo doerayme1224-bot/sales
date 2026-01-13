@@ -20,7 +20,7 @@ def generate_fake_data(num_entries):
             fake.random_int(min=0, max=1000),
             fake.random_int(min=1, max=2000),
             fake.random_int(min=1, max=600),
-            fake.ecommerce_name(),
+            fake.ecommerce_name().split(' ')[-1],
             fake.city(),
             fake.date_between(start_date='-5y', end_date='today'),
             fake.random_int(min=0, max=30),
