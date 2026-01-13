@@ -117,6 +117,30 @@ wheels = [
 ]
 
 [[package]]
+name = "faker"
+version = "40.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "tzdata" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/d7/1d/aa43ef59589ddf3647df918143f1bac9eb004cce1c43124ee3347061797d/faker-40.1.0.tar.gz", hash = "sha256:c402212a981a8a28615fea9120d789e3f6062c0c259a82bfb8dff5d273e539d2", size = 1948784, upload-time = "2025-12-29T18:06:00.659Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/fc/23/e22da510e1ec1488966330bf76d8ff4bd535cbfc93660eeb7657761a1bb2/faker-40.1.0-py3-none-any.whl", hash = "sha256:a616d35818e2a2387c297de80e2288083bc915e24b7e39d2fb5bc66cce3a929f", size = 1985317, upload-time = "2025-12-29T18:05:58.831Z" },
+]
+
+[[package]]
+name = "faker-commerce"
+version = "1.0.4"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "faker" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/db/af/02de5839967ec49d24d825664b0740e0e2dc278ff24f05f24d7d9bfdbe76/faker-commerce-1.0.4.tar.gz", hash = "sha256:f53da04143ab70754493fa97c0c64f5208c8f8f3c50273516ee3cafcea372953", size = 3076, upload-time = "2024-04-04T10:34:48.264Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/6c/7b/f6d3f054a77ea48caaec8170bceac71c0aec54d94729b9f66ebd1fcc8fe1/faker_commerce-1.0.4-py3-none-any.whl", hash = "sha256:6780fe30801aac399a64d421cd85c4593f7cd54d838cb400e8d31e463722622c", size = 3279, upload-time = "2024-04-04T10:34:46.811Z" },
+]
+
+[[package]]
 name = "gitdb"
 version = "4.0.12"
 source = { registry = "https://pypi.org/simple" }
@@ -518,6 +542,8 @@ name = "sales"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "faker" },
+    { name = "faker-commerce" },
     { name = "pandas" },
     { name = "requests" },
     { name = "streamlit" },
@@ -525,6 +551,8 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
+    { name = "faker", specifier = ">=40.1.0" },
+    { name = "faker-commerce", specifier = ">=1.0.4" },
     { name = "pandas", specifier = "==2.2" },
     { name = "requests", specifier = "==2.32.3" },
     { name = "streamlit", specifier = "==1.52" },
