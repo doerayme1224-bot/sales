@@ -5,22 +5,25 @@ import pandas as pd
 YEAR = 2023
 P_YEAR = 2022
 CITIES = ["Tokyo", "Yokohama", "Osaka"]
-DATA = "https://raw.githubusercontent.com/doerayme1224-bot/sales/refs/heads/main/data/sales.csv?token=GHSAT0AAAAAADTAEANMF646SZUQMR5WO6YC2LG3DLQ"
+DATA = "https://raw.githubusercontent.com/doerayme1224-bot/sales/refs/heads/main/data/sales.csv"
 
-st.title("Dashboard of Sales", anchor=False)
+# this section stores things in variables that we will use within our dashboard later, keep in mind that they correspond with attributes in our data
+
+st.title("Dashboard of Sales", anchor=False) # creates a title using streamlit, sets anchor to FALSE as a way to make it show up only on this page
 
 # Caching Data Session
 @st.cache_data
-def get_and_prepare_data(data):
+def get_and_prepare_data(data): # creates a function that reads a data set, and assigns it new features
     df = pd.read_csv(data).assign(
-        date_of_sale=lambda df: pd.to_datetime(df["date_of_sale"]),
-        month=lambda df: df["date_of_sale"].dt.month,
-        year=lambda df: df["date_of_sale"].dt.year,
+        date_of_sale=lambda df: pd.to_datetime(df["date_of_sale"]), # creates a date_of_sale feature that converts the date of sale column to a datetime
+        month=lambda df: df["date_of_sale"].dt.month, # creates a month feature that gets the month for each sale
+        year=lambda df: df["date_of_sale"].dt.year, # creates a year feature that gets the year for each sale
     )
-    return df
+    return df # returns/stores the df
 
-df = get_and_prepare_data(data=DATA)
-# Calculation of thetotal revenue and percentage for each city and year Session
+df = get_and_prepare_data(data=DATA) # creates a df using our function and our data which was assigned in configuration sessions
+
+# Calculation of the total revenue and percentage for each city and year Session
 city_revenues = (
     df.groupby(["city", "year"])["sales_amount"]
     .sum()

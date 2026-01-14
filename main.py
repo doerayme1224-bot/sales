@@ -26,10 +26,12 @@ pn = st.navigation(
 )
 
 
+# stuff for every session
+st.logo("assets/black-camera-logo-png-free-AfETto.png")
+st.sidebar.markdown("## Thank you for comming to my **Ted Talk!**")
+
 # --- Running Navigation ---
 pn.run()
-
-
 
 
 
