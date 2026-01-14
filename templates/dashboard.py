@@ -25,16 +25,16 @@ df = get_and_prepare_data(data=DATA) # creates a df using our function and our d
 
 # Calculation of the total revenue and percentage for each city and year Session
 city_revenues = (
-    df.groupby(["city", "year"])["sales_amount"]
-    .sum()
-    .unstack()
-    .assign(change=lambda x: x.pct_change(axis=1)[YEAR] * 100)
+    df.groupby(["city", "year"])["sales_amount"] # groups our data by the city and the year, to find the sales ammount forr each city and year
+    .sum() # adds them to get a total sales amount by  city and year
+    .unstack() # converts data from a long format to a short format (pivots the level we made from a from a row to a column)
+    .assign(change=lambda x: x.pct_change(axis=1)[YEAR] * 100) # creates a new column with assign to calculate the percent change relative to the previous columns value
 )
 # Displaying Data for each city in separate columns Session
-columns = st.columns(3)
-for i, city in enumerate(CITIES):
+columns = st.columns(3) # sets a stramlit app with three columns
+for i, city in enumerate(CITIES): # usees thes columns to find the city revenues for each city
     with columns[i]:
-        st.metric(
+        st.metric( # displays the metrics in the app above the dropdowns, shows there city name, value, and percent change as an arrow
             label=city,
             value=f"$ {city_revenues.loc[city, YEAR]:,.0f}",
             delta=f"{city_revenues.loc[city, 'change']:.0f}% change vs. PY",
@@ -43,36 +43,36 @@ for i, city in enumerate(CITIES):
 # Fields Selection Session
 left_col, right_col = st.columns(2)
 analysis_type = left_col.selectbox(
-    label="Analysis by:",
+    label="Analysis by:", # creates the first select box for the visual on the app, groups it either by the product category or the month and you select it using a dropdown
     options=["Month", "Product Category"],
     key="analysis_type",
 )
-selected_city = right_col.selectbox("Select a city:", CITIES)
+selected_city = right_col.selectbox("Select a city:", CITIES) # creates the next dropdown, where you select one of the cities from the select a city dropdown 
 # Session to Toggle for selecting the year for visualization
-previous_year_toggle = st.toggle(
+previous_year_toggle = st.toggle( # creaets a toggle where you select if you want the current year (unselected) or the previous year within the data
     value=False, label="Previous Year", key="switch_visualization"
 )
 visualization_year = P_YEAR if previous_year_toggle else YEAR
 # Session to Display the year above the chart based on the toggle switch
-st.write(f"**Sales for {visualization_year}**")
+st.write(f"**Sales for {visualization_year}**") # title thing above the graph
 
 # Filter data based on selection for visualization
-if analysis_type == "Product Category":
+if analysis_type == "Product Category": # this filters the data based on the selection that you chose from the dropdown menu
     filtered_data = (
         df.query("city == @selected_city & year == @visualization_year")
-        .groupby("product_category", dropna=False)["sales_amount"]
+        .groupby("product_category", dropna=False)["sales_amount"] # this filters the data based on if you selected product category
         .sum()
         .reset_index()
     )
-else:
+else: # runs when the first if statement doesn't run
     # Group by month number
-    filtered_data = (
+    filtered_data = ( # stores the result of the query in a variable filtered_data
         df.query("city == @selected_city & year == @visualization_year")
-        .groupby("month", dropna=False)["sales_amount"]
+        .groupby("month", dropna=False)["sales_amount"] # filters based on the year
         .sum()
         .reset_index()
     )
     # Ensure month column is formatted as two digits for consistency
     filtered_data["month"] = filtered_data["month"].apply(lambda x: f"{x:02d}")
 # Display the data Session
-st.bar_chart(filtered_data.set_index(filtered_data.columns[0])["sales_amount"])
+st.bar_chart(filtered_data.set_index(filtered_data.columns[0])["sales_amount"]) # creates a visual using filtered_data and sets its index/axis to 0 meaning the x axis and shows summary statistics based on the sales amount of the filtered group
